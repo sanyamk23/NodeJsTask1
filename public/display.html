@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff6f61, #d68f6d);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            padding: 40px;
+            background: #fff;
+            color: #333;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            animation: fadeIn 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            text-align: center;
+            color: #ff6f61;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        table thead {
+            background-color: #ff6f61;
+            color: #fff;
+        }
+        table tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+        .back-button {
+            background-color: #4a90e2;
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background-color: #357abd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Display Users</h1>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Mobile No</th>
+                    <th>Email ID</th>
+                    <th>Street</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th>Login ID</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+        <button class="back-button" onclick="window.location.href='/index.html'">Back to Create User</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/users',
+                type: 'GET',
+                success: function(data) {
+                    var tbody = $('#userTable tbody');
+                    tbody.empty();
+                    data.forEach(function(user) {
+                        // Parse dates using moment.js
+                        let createdAt = moment(user.createdAt);
+                        let updatedAt = moment(user.updatedAt);
+
+                        // Format dates
+                        let formattedCreatedAt = createdAt.isValid() ? createdAt.format('YYYY-MM-DD HH:mm:ss') : 'Invalid Date';
+                        let formattedUpdatedAt = updatedAt.isValid() ? updatedAt.format('YYYY-MM-DD HH:mm:ss') : 'Invalid Date';
+
+                        tbody.append(
+                            '<tr>' +
+                                '<td>' + user.firstName + '</td>' +
+                                '<td>' + user.lastName + '</td>' +
+                                '<td>' + user.mobileNo + '</td>' +
+                                '<td>' + user.emailId + '</td>' +
+                                '<td>' + user.address.street + '</td>' +
+                                '<td>' + user.address.city + '</td>' +
+                                '<td>' + user.address.state + '</td>' +
+                                '<td>' + user.address.country + '</td>' +
+                                '<td>' + user.loginId + '</td>' +
+                                '<td>' + formattedCreatedAt + '</td>' +
+                                '<td>' + formattedUpdatedAt + '</td>' +
+                            '</tr>'
+                        );
+                    });
+                },
+                error: function(error) {
+                    console.log('Error fetching users: ', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
