@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect('mongodb+srv://sanyamkumat:Sanyam%402305@cluster0.iz588ml.mongodb.net/');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
