@@ -14,7 +14,7 @@ const app = express();
 //     console.log('Connected to MongoDB');
 // });
 
-const uri = 'mongodb+srv://sanyamk23:Sanyam@2305@cluster0.lijatce.mongodb.net/task1?retryWrites=true&w=majority'
+const uri = 'mongodb+srv://sanyamk23:Sanyam%402305@cluster0.lijatce.mongodb.net/task1?retryWrites=true&w=majority';
 
 mongoose.connect(uri)
   .then(() => console.log('MongoDB connected successfully'))
