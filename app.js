@@ -6,13 +6,17 @@ require('dotenv').config();
 
 const app = express();
 
-mongoose.connect('mongodb+srv://sanyamkumat:Sanyam%402305@cluster0.iz588ml.mongodb.net/');
+mongoose.connect('mongodb+srv://sanyamkumat:Sanyam%402305@cluster0.iz588ml.mongodb.net/test?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log('Connected to MongoDB');
 });
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected successfully'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
